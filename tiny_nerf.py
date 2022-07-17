@@ -124,19 +124,23 @@ def run_one_iter_of_tinynerf(
 ):
 
     # Get the "bundle" of rays through all image pixels.
+    # [100, 100, 3], [100, 100, 3]
     ray_origins, ray_directions = get_ray_bundle(
         height, width, focal_length, tform_cam2world
     )
 
     # Sample query points along each ray
+    # [100, 100, 32, 3], [100, 100, 32]
     query_points, depth_values = compute_query_points_from_rays(
         ray_origins, ray_directions, near_thresh, far_thresh, depth_samples_per_ray
     )
 
     # "Flatten" the query points.
+    # [320000, 3]
     flattened_query_points = query_points.reshape((-1, 3))
 
     # Encode the query points (default: positional encoding).
+    # [320000, 63]
     encoded_points = encoding_function(flattened_query_points, encoding_function_args)
 
     # Split the encoded points into "chunks", run the model on all chunks, and
@@ -194,7 +198,7 @@ def main():
     Load input images and poses
     """
 
-    data = np.load("cache/tiny_nerf_data.npz")
+    data = np.load("/home/chao/Workspace/dataset/nerf/tiny_nerf_data.npz")
 
     # Images
     images = data["images"]

@@ -3,7 +3,8 @@ from typing import Optional
 
 import torch
 
-import torchsearchsorted
+from torch import searchsorted as torchsearchsorted
+# import torchsearchsorted
 
 
 def img2mse(img_src, img_tgt):
